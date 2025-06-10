@@ -4,6 +4,7 @@ import axios from 'axios';
 import authService from '../api/authService';
 import { useLanguage } from '../context/LanguageContext';
 import { useDarkMode } from '../context/DarkModeContext';
+import API_URL from "../config";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ const ProfilePage = () => {
       }
 
       const response = await axios.put(
-        'http://localhost:8080/api/users/profile',
+        API_URL+'api/users/profile',
         formDataToSend,
         {
           headers: {

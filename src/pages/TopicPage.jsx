@@ -6,6 +6,7 @@ import CommentItem from '../components/CommentItem';
 import authService from '../api/authService';
 import { useLanguage } from '../context/LanguageContext';
 import { useDarkMode } from '../context/DarkModeContext';
+import API_URL from "../config";
 
 const TopicPage = () => {
   const { id } = useParams();
@@ -20,11 +21,11 @@ const TopicPage = () => {
   useEffect(() => {
     const fetchTopic = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/topics/${id}`);
+        const response = await axios.get(API_URL+`api/topics/${id}`);
         if (response.data) {
           setTopic(response.data);
           // Yorumları ayrı bir API çağrısı ile al
-          const commentsResponse = await axios.get(`http://localhost:8080/api/comments/topic/${id}`);
+          const commentsResponse = await axios.get(API_URL+`api/comments/topic/${id}`);
           if (commentsResponse.data) {
             setComments(commentsResponse.data);
           }
@@ -51,7 +52,7 @@ const TopicPage = () => {
 
     const incrementViews = async () => {
       try {
-        await axios.put(`http://localhost:8080/api/topics/${id}/increment-views`);
+        await axios.put(API_URL+`api/topics/${id}/increment-views`);
       } catch (error) {
         console.error('Görüntülenme sayısı artırılırken hata oluştu:', error);
       }

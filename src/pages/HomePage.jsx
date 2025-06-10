@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useDarkMode } from '../context/DarkModeContext';
 import axios from 'axios';
+import API_URL from "../config";
 
 const HomePage = () => {
   const { language, translations } = useLanguage();
@@ -14,7 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/categories');
+        const response = await axios.get(API_URL+'api/categories');
         setCategories(response.data);
         setLoading(false);
       } catch (err) {

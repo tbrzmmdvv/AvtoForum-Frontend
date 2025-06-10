@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import authService from '../api/authService';
+import API_URL from "../config";
 
 const CommentItem = ({ comment, onCommentDeleted }) => {
   const [error, setError] = useState('');
@@ -16,7 +17,7 @@ const CommentItem = ({ comment, onCommentDeleted }) => {
 
     try {
       await axios.delete(
-        `http://localhost:8080/api/comments/${comment.id}`,
+        API_URL+`api/comments/${comment.id}`,
         {
           headers: {
             'Authorization': `Bearer ${JSON.parse(localStorage.getItem('user'))?.token}`

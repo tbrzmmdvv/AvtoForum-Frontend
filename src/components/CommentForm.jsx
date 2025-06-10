@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useDarkMode } from '../context/DarkModeContext';
 import axios from 'axios';
 import authService from '../api/authService';
+import API_URL from "../config";
 
 const CommentForm = ({ topicId, onCommentAdded }) => {
   const { language, translations } = useLanguage();
@@ -24,7 +25,7 @@ const CommentForm = ({ topicId, onCommentAdded }) => {
       }
 
       const response = await axios.post(
-        'http://localhost:8080/api/comments',
+        API_URL+'api/comments',
         { content, topicId },
         {
           headers: {

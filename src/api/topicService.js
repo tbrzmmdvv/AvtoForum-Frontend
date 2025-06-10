@@ -1,6 +1,7 @@
 import axios from 'axios';
+import API_URL from '../config';
 
-const API_URL = 'http://localhost:8080/api/';
+
 
 const topicService = {
   createTopic: async (topicData) => {

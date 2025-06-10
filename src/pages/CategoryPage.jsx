@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useDarkMode } from '../context/DarkModeContext';
 import axios from 'axios';
+import API_URL from "../config";
 
 const CategoryPage = () => {
   const { language, translations } = useLanguage();
@@ -17,8 +18,8 @@ const CategoryPage = () => {
     const fetchData = async () => {
       try {
         const [categoryResponse, topicsResponse] = await Promise.all([
-          axios.get(`http://localhost:8080/api/categories/${id}`),
-          axios.get(`http://localhost:8080/api/topics/category/${id}`)
+          axios.get(API_URL+`api/categories/${id}`),
+          axios.get(API_URL+`api/topics/category/${id}`)
         ]);
         setCategory(categoryResponse.data);
         setTopics(topicsResponse.data);

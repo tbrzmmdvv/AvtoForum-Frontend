@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import authService from '../api/authService';
+import API_URL from "../config";
 
 const CreateCategoryPage = () => {
   const [name, setName] = useState('');
@@ -18,7 +19,7 @@ const CreateCategoryPage = () => {
 
     try {
       await axios.post(
-        'http://localhost:8080/api/categories',
+        API_URL+'api/categories',
         {
           name,
           description

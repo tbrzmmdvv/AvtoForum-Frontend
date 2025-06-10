@@ -4,6 +4,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useDarkMode } from '../context/DarkModeContext';
 import axios from 'axios';
 import authService from '../api/authService';
+import API_URL from "../config";
 
 const CreateTopicPage = () => {
   const { language, translations } = useLanguage();
@@ -24,7 +25,7 @@ const CreateTopicPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/categories');
+        const response = await axios.get(API_URL+'api/categories');
         setCategories(response.data);
       } catch (err) {
         console.error('Kategoriler yüklenirken hata oluştu:', err);
@@ -90,7 +91,7 @@ const CreateTopicPage = () => {
       }
 
       const response = await axios.post(
-        'http://localhost:8080/api/topics',
+        API_URL+'api/topics',
         formData,
         {
           headers: {
