@@ -6,7 +6,7 @@ import API_URL from '../config';
 const authService = {
   login: async (username, password) => {
     try {
-      const response = await axios.post('http://165.227.151.218/api/auth/login', {
+      const response = await axios.post(API_URL+'api/auth/login', {
         username,
         password
       });
