@@ -1,5 +1,5 @@
 name: Deploy Frontend to DigitalOcean
-   
+    
 on:
   push:
     branches: [ master ]
