@@ -42,7 +42,7 @@ const authService = {
   
   register: async (userData) => {
     try {
-      const response = await axios.post(API_URL + 'auth/register', userData);
+      const response = await axios.post(API_URL + 'api/auth/register', userData);
       if (response.status === 201) {
         return { success: true, message: response.data.message };
       }
