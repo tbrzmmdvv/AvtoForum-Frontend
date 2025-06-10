@@ -65,7 +65,7 @@ jobs:
         target: "/root/"
         
     - name: Load and run Docker container
-      uses: appleboy/scp-action@v0.1.4
+      uses: appleboy/ssh-action@v0.1.8
       with:
         host: ${{ secrets.DO_HOST_FRONTEND }}
         username: ${{ secrets.DO_USERNAME }}
