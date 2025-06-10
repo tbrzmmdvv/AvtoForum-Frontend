@@ -1,0 +1,85 @@
+name: Deploy Frontend to DigitalOcean
+     
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Create .env file
+      run: |
+        echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
+        
+    - name: Build React app
+      run: npm run build
+      
+    - name: Build Docker image
+      run: docker build -t avtoforum-frontend .
+      
+    - name: Save Docker image
+      run: docker save avtoforum-frontend > avtoforum-frontend.tar
+      
+    - name: Deploy to DigitalOcean
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: ${{ secrets.DO_HOST_FRONTEND }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        script: |
+          # Stop existing container
+          docker stop avtoforum-frontend || true
+          docker rm avtoforum-frontend || true
+          docker rmi avtoforum-frontend || true
+          
+          # Install Docker if not exists
+          if ! command -v docker &> /dev/null; then
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sh get-docker.sh
+            systemctl start docker
+            systemctl enable docker
+          fi
+          
+    - name: Copy Docker image to server
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.DO_HOST_FRONTEND }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        source: "avtoforum-frontend.tar"
+        target: "/root/"
+        
+    - name: Load and run Docker container
+      uses: appleboy/ssh-action@v0.1.8
+      with:
+        host: ${{ secrets.DO_HOST_FRONTEND }}
+        username: ${{ secrets.DO_USERNAME }}
+        key: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        script: |
+          # Load Docker image
+          docker load < /root/avtoforum-frontend.tar
+          
+          # Run container
+          docker run -d \
+            --name avtoforum-frontend \
+            -p 80:80 \
+            --restart unless-stopped \
+            avtoforum-frontend
+          
+          # Clean up
+          rm /root/avtoforum-frontend.tar
