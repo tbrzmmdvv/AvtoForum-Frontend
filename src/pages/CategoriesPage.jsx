@@ -15,6 +15,7 @@ const CategoriesPage = () => {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(API_URL+'api/categories');
+        console.log("Fetching categories from URL:", url);
         setCategories(response.data);
         setLoading(false);
       } catch (err) {
