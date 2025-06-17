@@ -1,6 +1,6 @@
 name: Deploy Frontend to DigitalOcean
        
-on:
+on: 
   push:
     branches: [ master ]
   pull_request:
